@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ardian Krasniqi — Portfolio</title>
+  <meta name="description" content="Ardian Krasniqi — Senior Software Developer | SaaS & AI" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #7c3aed;
+      --glass-bg: rgba(255,255,255,0.04);
+      --glass-border: rgba(255,255,255,0.06);
+      --card-glow: rgba(124,58,237,0.12);
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background: linear-gradient(180deg, #060712 0%, #071026 50%, #03040a 100%);
+      overflow-x: hidden;
+    }
+    .glass {
+      background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--glass-border);
+    }
+    .glass-strong {
+      background: rgba(255,255,255,0.06);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .card-tilt {
+      transform: perspective(1000px);
+      transition: transform .28s cubic-bezier(.2,.9,.3,1), box-shadow .28s;
+      will-change: transform;
+    }
+    .card-tilt:hover {
+      box-shadow: 0 18px 40px rgba(2,6,23,0.6), 0 0 40px var(--card-glow);
+    }
+    .fade-up {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .6s cubic-bezier(.2,.9,.3,1), transform .6s cubic-bezier(.2,.9,.3,1);
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .underline-fancy {
+      position: relative;
+    }
+    .underline-fancy::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      transition: width .35s ease;
+      border-radius: 2px;
+    }
+    .underline-fancy:hover::after {
+      width: 100%;
+    }
+    .skill-badge {
+      font-weight: 600;
+      font-size: .74rem;
+      padding: .35rem .6rem;
+      border-radius: .5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      box-shadow: 0 4px 14px rgba(2,6,23,0.45);
+    }
+    .hero-accent {
+      position: absolute;
+      inset: -20% -10% auto auto;
+      width: 70vmax;
+      height: 70vmax;
+      pointer-events: none;
+      background: radial-gradient(circle at 20% 20%, rgba(124,58,237,0.08), transparent 10%, transparent 40%);
+      filter: blur(30px);
+    }
+    .skill-bar {
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #111827, #0b1220);
+      overflow: hidden;
+    }
+    .skill-bar > i {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+    }
+    .modal-panel {
+      max-width: 880px;
+      width: 100%;
+      border-radius: 14px;
+    }
+    .nav-anim {
+      transition: transform .35s cubic-bezier(.2,.9,.3,1), opacity .28s;
+    }
+    .focus-ring:focus {
+      outline: 3px solid rgba(124,58,237,0.18);
+      outline-offset: 3px;
+    }
+    @media (max-width: 640px) {
+      .hero-accent {
+        width: 140vmax;
+        height: 140vmax;
+        left: -40%;
+        top: -60%;
+        filter: blur(50px);
+      }
+    }
+  </style>
+</head>
+<body class="text-slate-200 antialiased leading-relaxed">
+  <!-- Header / Nav -->
+  <header class="fixed w-full z-40 top-0 left-0 px-4 py-3 sm:px-8 glass-strong">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-md flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-500 text-white font-bold">AK</div>
+        <div class="hidden sm:block">
+          <div class="text-sm font-semibold">Ardian Krasniqi</div>
+          <div class="text-xs text-slate-400">Software Developer</div>
+        </div>
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm">
+        <a class="underline-fancy" href="#projects">Projects</a>
+        <a class="underline-fancy" href="#skills">Skills</a>
+        <a class="underline-fancy" href="#about">About</a>
+        <a class="underline-fancy" href="#contact">Contact</a>
+        <a href="#cv" class="ml-2 inline-flex items-center gap-2 text-xs px-3 py-2 rounded-md glass border border-white/6 focus-ring">CV</a>
+      </nav>
+      <div class="md:hidden">
+        <button id="navBtn" aria-label="Open menu" class="p-2 rounded-md glass focus-ring">
+          <svg id="hamburger" class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none">
+            <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="md:hidden fixed left-4 right-4 top-16 glass rounded-xl p-6 shadow-lg transform -translate-y-2 opacity-0 pointer-events-none z-50 nav-anim">
+      <div class="flex flex-col gap-4 text-center">
+        <a href="#projects" class="font-semibold">Projects</a>
+        <a href="#skills" class="font-semibold">Skills</a>
+        <a href="#about" class="font-semibold">About</a>
+        <a href="#contact" class="font-semibold">Contact</a>
+        <a href="#cv" class="inline-block mt-1 px-4 py-2 rounded-md bg-gradient-to-r from-purple-600 to-indigo-500 text-white">Download CV</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-28">
+    <!-- Hero -->
+    <section id="home" class="max-w-6xl mx-auto px-6 py-20 flex flex-col md:flex-row items-center gap-12 relative overflow-visible">
+      <div class="hero-accent" aria-hidden="true"></div>
+      <div class="flex-1">
+        <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight">Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">Ardian Krasniqi</span></h1>
+        <p class="mt-4 text-slate-300 max-w-xl">Software Developer focused on AI & SaaS: I build secure, scalable backends and delightful front-ends that perform at scale. I combine clean code with smart UX and smooth interactions.</p>
+        <div class="mt-6 flex gap-3 items-center">
+          <a href="#projects" class="px-5 py-3 rounded-md bg-gradient-to-r from-purple-600 to-indigo-500 shadow-lg text-white font-medium transform transition hover:-translate-y-0.5">See projects</a>
+          <a href="mailto:ardiankrasqini171@gmail.com" class="px-4 py-3 rounded-md glass border border-white/6">Contact me</a>
+        </div>
+        <div class="mt-8 grid grid-cols-2 gap-3 text-sm text-slate-400 w-full sm:w-3/4">
+          <div class="bg-white/3 rounded-md p-3 glass">
+            <div class="text-xs">Location</div>
+            <div class="font-medium text-white">Kosova</div>
+          </div>
+          <div class="bg-white/3 rounded-md p-3 glass">
+            <div class="text-xs">Availability</div>
+            <div class="font-medium text-white">Freelance / Contract</div>
+          </div>
+          <div class="bg-white/3 rounded-md p-3 glass">
+            <div class="text-xs">Stack</div>
+            <div class="font-medium text-white">PHP · Tailwind · Css · Tailwind · JavaScript</div>
+          </div>
+          <div class="bg-white/3 rounded-md p-3 glass">
+            <div class="text-xs">Focus</div>
+            <div class="font-medium text-white">SaaS · AI · Backend · Frontend</div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full md:w-96 flex-shrink-0">
+        <div class="relative rounded-2xl overflow-hidden border border-white/6 card-tilt tilt" data-tilt-scale="1.02">
+          <img src="https://i.pinimg.com/1200x/e1/e0/ab/e1e0ab6d490e41096e86e5e9e5abff16.jpg" alt="profile" class="w-full h-64 object-cover">
+          <div class="absolute bottom-3 left-3 right-3 p-4 rounded-lg glass text-sm">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="text-xs text-slate-300">Founder • Lead Developer</div>
+                <div class="font-semibold">Elevate — SaaS & AI</div>
+              </div>
+              <div class="text-xs text-slate-300">5+ yrs</div>
+            </div>
+            <div class="mt-2 text-[13px] text-slate-300">I build performant backends, AI tools and scalable SaaS products. Open to collaborations & remote roles.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+<!-- Projects -->
+<section id="projects" class="max-w-6xl mx-auto px-6 py-12">
+  <h2 class="text-2xl font-bold mb-2">Selected Projects</h2>
+  <p class="text-slate-400 mb-6">
+    A curated list of projects that showcase full-stack development, SaaS, and AI integrations.
+  </p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <!-- Project: Sigal KS -->
+    <article class="bg-[#071026] rounded-xl p-4 border border-white/6 card-tilt tilt fade-up"
+      data-title="Sigal KS"
+      data-desc="Full-stack corporate website with secure backend, dynamic content, and optimized performance for high traffic."
+      data-url="https://sigal-ks.com">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-md bg-gradient-to-br from-purple-600 to-indigo-500 flex items-center justify-center text-white font-semibold">S</div>
+        <div class="flex-1">
+          <h3 class="font-semibold">Sigal KS</h3>
+          <div class="text-xs text-slate-400 mt-1">Full-stack corporate platform</div>
+        </div>
+        <div class="text-xs text-slate-400">2024</div>
+      </div>
+      <p class="mt-3 text-slate-300 text-sm">Full-stack corporate website with secure backend, dynamic content, and optimized performance for high traffic.</p>
+      <div class="mt-4 flex items-center justify-between">
+        <div class="project-tech text-xs text-slate-400">Tech: PHP · MySQL · Tailwind</div>
+        <div class="flex gap-2">
+          <button class="openProject px-3 py-1 text-sm rounded-md glass border border-white/6">Details</button>
+          <a href="https://sigal-ks.com" target="_blank" rel="noopener" class="px-3 py-1 rounded-md bg-white/5 text-sm">Visit</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project: Draw-AI -->
+    <article class="bg-[#071026] rounded-xl p-4 border border-white/6 card-tilt tilt fade-up"
+      data-title="Draw-AI"
+      data-desc="AI-powered web drawing app with predictive tools and interactive design."
+      data-url="https://ardianiii.github.io/draw-ai-/">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-md bg-gradient-to-br from-green-500 to-emerald-400 flex items-center justify-center text-white font-semibold">D</div>
+        <div class="flex-1">
+          <h3 class="font-semibold">Draw-AI</h3>
+          <div class="text-xs text-slate-400 mt-1">Creative AI tool</div>
+        </div>
+        <div class="text-xs text-slate-400">2023</div>
+      </div>
+      <p class="mt-3 text-slate-300 text-sm">AI-powered web drawing app with predictive tools and interactive design.</p>
+      <div class="mt-4 flex items-center justify-between">
+        <div class="project-tech text-xs text-slate-400">Tech: JS · Canvas · ML</div>
+        <div class="flex gap-2">
+          <button class="openProject px-3 py-1 text-sm rounded-md glass border border-white/6">Details</button>
+          <a href="https://ardianiii.github.io/draw-ai-/" target="_blank" rel="noopener" class="px-3 py-1 rounded-md bg-white/5 text-sm">Visit</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project: Optika Moda -->
+    <article class="bg-[#071026] rounded-xl p-4 border border-white/6 card-tilt tilt fade-up"
+      data-title="Optika Moda"
+      data-desc="E-commerce platform with secure checkout, inventory management, and responsive UI."
+      data-url="https://optikamoda.com">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-md bg-gradient-to-br from-pink-500 to-rose-400 flex items-center justify-center text-white font-semibold">O</div>
+        <div class="flex-1">
+          <h3 class="font-semibold">Optika Moda</h3>
+          <div class="text-xs text-slate-400 mt-1">E-commerce</div>
+        </div>
+        <div class="text-xs text-slate-400">2022</div>
+      </div>
+      <p class="mt-3 text-slate-300 text-sm">E-commerce platform with secure checkout, inventory management, and responsive UI.</p>
+      <div class="mt-4 flex items-center justify-between">
+        <div class="project-tech text-xs text-slate-400">Tech: WooCommerce · PHP</div>
+        <div class="flex gap-2">
+          <button class="openProject px-3 py-1 text-sm rounded-md glass border border-white/6">Details</button>
+          <a href="https://optikamoda.com" target="_blank" rel="noopener" class="px-3 py-1 rounded-md bg-white/5 text-sm">Visit</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project: Bodrum i Vjeter -->
+    <article class="bg-[#071026] rounded-xl p-4 border border-white/6 card-tilt tilt fade-up"
+      data-title="Bodrum i Vjeter"
+      data-desc="Interactive website with optimized server performance and dynamic content."
+      data-url="https://bodrumivjeter.com">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-md bg-gradient-to-br from-yellow-500 to-orange-400 flex items-center justify-center text-white font-semibold">B</div>
+        <div class="flex-1">
+          <h3 class="font-semibold">Bodrum i Vjeter</h3>
+          <div class="text-xs text-slate-400 mt-1">Interactive site</div>
+        </div>
+        <div class="text-xs text-slate-400">2023</div>
+      </div>
+      <p class="mt-3 text-slate-300 text-sm">Interactive website with optimized server performance and dynamic content.</p>
+      <div class="mt-4 flex items-center justify-between">
+        <div class="project-tech text-xs text-slate-400">Tech: Node · Express · CDN</div>
+        <div class="flex gap-2">
+          <button class="openProject px-3 py-1 text-sm rounded-md glass border border-white/6">Details</button>
+          <a href="https://bodrumivjeter.com" target="_blank" rel="noopener" class="px-3 py-1 rounded-md bg-white/5 text-sm">Visit</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project: Al-Tek -->
+    <article class="bg-[#071026] rounded-xl p-4 border border-white/6 card-tilt tilt fade-up"
+      data-title="Al-Tek"
+      data-desc="SaaS backend with API integrations, cloud hosting, and performance optimization."
+      data-url="https://al-tek.al">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-md bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white font-semibold">A</div>
+        <div class="flex-1">
+          <h3 class="font-semibold">Al-Tek</h3>
+          <div class="text-xs text-slate-400 mt-1">SaaS Backend</div>
+        </div>
+        <div class="text-xs text-slate-400">2024</div>
+      </div>
+      <p class="mt-3 text-slate-300 text-sm">SaaS backend with API integrations, cloud hosting, and performance optimization.</p>
+      <div class="mt-4 flex items-center justify-between">
+        <div class="project-tech text-xs text-slate-400">Tech: APIs · AWS · MySQL</div>
+        <div class="flex gap-2">
+          <button class="openProject px-3 py-1 text-sm rounded-md glass border border-white/6">Details</button>
+          <a href="https://al-tek.al" target="_blank" rel="noopener" class="px-3 py-1 rounded-md bg-white/5 text-sm">Visit</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project: Epidamn -->
+    <article class="bg-[#071026] rounded-xl p-4 border border-white/6 card-tilt tilt fade-up"
+      data-title="Epidamn"
+      data-desc="Real-time web application with analytics dashboard and backend performance monitoring"
+      data-url="https://epidamn.com">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-md bg-gradient-to-br from-indigo-600 to-purple-500 flex items-center justify-center text-white font-semibold">E</div>
+        <div class="flex-1">
+          <h3 class="font-semibold">Epidamn</h3>
+          <div class="text-xs text-slate-400 mt-1">Real-time app</div>
+        </div>
+        <div class="text-xs text-slate-400">2024</div>
+      </div>
+      <p class="mt-3 text-slate-300 text-sm">Real-time web application with analytics dashboard and backend performance monitoring.</p>
+      <div class="mt-4 flex items-center justify-between">
+        <div class="project-tech text-xs text-slate-400">Tech: WebSockets · Node · Analytics</div>
+        <div class="flex gap-2">
+          <button class="openProject px-3 py-1 text-sm rounded-md glass border border-white/6">Details</button>
+          <a href="https://epidamn.com" target="_blank" rel="noopener" class="px-3 py-1 rounded-md bg-white/5 text-sm">Visit</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project: Gerti Foods -->
+    <article class="bg-[#071026] rounded-xl p-4 border border-white/6 card-tilt tilt fade-up"
+      data-title="Gerti Foods"
+      data-desc="Food service website and ordering platform."
+      data-url="https://gertifoods.com">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-md bg-gradient-to-br from-amber-500 to-yellow-400 flex items-center justify-center text-white font-semibold">G</div>
+        <div class="flex-1">
+          <h3 class="font-semibold">Gerti Foods</h3>
+          <div class="text-xs text-slate-400 mt-1">Food service</div>
+        </div>
+        <div class="text-xs text-slate-400">2021</div>
+      </div>
+      <p class="mt-3 text-slate-300 text-sm">Food service website and ordering platform.</p>
+      <div class="mt-4 flex items-center justify-between">
+        <div class="project-tech text-xs text-slate-400">Tech: PHP · WooCommerce</div>
+        <div class="flex gap-2">
+          <button class="openProject px-3 py-1 text-sm rounded-md glass border border-white/6">Details</button>
+          <a href="https://gertifoods.com" target="_blank" rel="noopener" class="px-3 py-1 rounded-md bg-white/5 text-sm">Visit</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project: Mendove Pro Gjelber -->
+    <article class="bg-[#071026] rounded-xl p-4 border border-white/6 card-tilt tilt fade-up"
+      data-title="Mendove Pro Gjelber"
+      data-desc="Interactive public information site."
+      data-url="https://mendoveprogjelber.com/">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-md bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center text-white font-semibold">M</div>
+        <div class="flex-1">
+          <h3 class="font-semibold">Mendove Pro Gjelber</h3>
+          <div class="text-xs text-slate-400 mt-1">Public info</div>
+        </div>
+        <div class="text-xs text-slate-400">2022</div>
+      </div>
+      <p class="mt-3 text-slate-300 text-sm">Interactive public information site.</p>
+      <div class="mt-4 flex items-center justify-between">
+        <div class="project-tech text-xs text-slate-400">Tech: HTML · Tailwind</div>
+        <div class="flex gap-2">
+          <button class="openProject px-3 py-1 text-sm rounded-md glass border border-white/6">Details</button>
+          <a href="https://mendoveprogjelber.com/" target="_blank" rel="noopener" class="px-3 py-1 rounded-md bg-white/5 text-sm">Visit</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+
+    <!-- Skills, About, Contact sections remain unchanged -->
+    <section id="skills" class="max-w-6xl mx-auto px-6 py-12">
+      <h2 class="text-2xl font-bold mb-6">Skills</h2>
+      <p class="text-slate-300 mb-8">My technical expertise and core strengths across development, cloud, SaaS, emerging tech, and leadership.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="p-5 rounded-xl glass card-tilt tilt fade-up">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-semibold text-lg mb-1 flex items-center gap-2"><i class="bx bx-server text-cyan-300"></i> Backend & Databases</h3>
+              <div class="text-sm text-slate-300 mb-3">Server-side systems, APIs, DB design and optimization, secure authentication.</div>
+            </div>
+            <div class="text-xs text-slate-400">Pro</div>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <span class="skill-badge bg-gradient-to-r from-purple-600 to-indigo-500 text-white">PHP</span>
+            <span class="skill-badge bg-gradient-to-r from-sky-500 to-teal-400 text-white">Node.js</span>
+            <span class="skill-badge bg-gradient-to-r from-amber-400 to-yellow-300 text-white">Laravel</span>
+            <span class="skill-badge bg-gradient-to-r from-indigo-600 to-purple-500 text-white">MySQL</span>
+          </div>
+          <div class="mt-4 text-xs text-slate-400">APIs & Patterns</div>
+          <div class="mt-2 flex flex-wrap gap-2 text-xs text-slate-300">
+            <span class="bg-white/6 px-3 py-1 rounded">REST</span>
+            <span class="bg-white/6 px-3 py-1 rounded">GraphQL</span>
+            <span class="bg-white/6 px-3 py-1 rounded">Microservices</span>
+            <span class="bg-white/6 px-3 py-1 rounded">Serverless</span>
+          </div>
+        </div>
+        <div class="p-5 rounded-xl glass card-tilt tilt fade-up">
+          <h3 class="font-semibold text-lg mb-3 flex items-center gap-2"><i class="bx bx-code-alt text-cyan-300"></i> Frontend</h3>
+          <p class="text-sm text-slate-300 mb-3">Modern JS, responsive UI, component-driven front‑ends and UI/UX prototyping.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="skill-badge bg-gradient-to-r from-green-500 to-emerald-400 text-white">JavaScript (ES6+)</span>
+            <span class="skill-badge bg-gradient-to-r from-blue-500 to-sky-400 text-white">TypeScript</span>
+            <span class="skill-badge bg-gradient-to-r from-indigo-500 to-violet-400 text-white">Vue.js</span>
+            <span class="skill-badge bg-gradient-to-r from-slate-500 to-gray-400 text-white">Tailwind</span>
+          </div>
+          <div class="mt-4 text-xs text-slate-400">Proficiency</div>
+          <div class="mt-2 skill-bar" aria-hidden="true"><i style="width:90%; background: linear-gradient(90deg,#06b6d4,#7c3aed);"></i></div>
+        </div>
+        <div class="p-5 rounded-xl glass card-tilt tilt fade-up">
+          <h3 class="font-semibold text-lg mb-3 flex items-center gap-2"><i class="bx bx-cloud text-cyan-300"></i> Cloud & DevOps</h3>
+          <p class="text-sm text-slate-300 mb-3">From deployment pipelines to monitoring and performance tuning.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="skill-badge bg-gradient-to-r from-yellow-500 to-orange-400 text-white">AWS</span>
+            <span class="skill-badge bg-gradient-to-r from-amber-400 to-rose-400 text-white">CI/CD</span>
+            <span class="skill-badge bg-gradient-to-r from-emerald-400 to-teal-300 text-white">Hosting</span>
+          </div>
+        </div>
+        <div class="p-5 rounded-xl glass card-tilt tilt fade-up">
+          <h3 class="font-semibold text-lg mb-3 flex items-center gap-2"><i class="bx bx-world text-cyan-300"></i> Web & SaaS Development</h3>
+          <p class="text-sm text-slate-300 mb-3">Designing SaaS architectures, multi‑tenant systems and productized services.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="skill-badge bg-gradient-to-r from-pink-500 to-rose-400 text-white">Full-Stack</span>
+            <span class="skill-badge bg-gradient-to-r from-pink-500 to-rose-400 text-white">WordPress</span>
+            <span class="skill-badge bg-gradient-to-r from-pink-500 to-rose-400 text-white">AI Integration</span>
+          </div>
+        </div>
+        <div class="p-5 rounded-xl glass card-tilt tilt fade-up">
+          <h3 class="font-semibold text-lg mb-3 flex items-center gap-2"><i class="bx bx-bitcoin text-cyan-300"></i> Blockchain & Emerging Tech</h3>
+          <p class="text-sm text-slate-300 mb-3">Web3 basics and crypto integrations for payments and dApps.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="skill-badge bg-gradient-to-r from-cyan-500 to-blue-500 text-white">Web3.js</span>
+            <span class="skill-badge bg-gradient-to-r from-cyan-500 to-blue-500 text-white">Solidity (Basics)</span>
+          </div>
+        </div>
+        <div class="p-5 rounded-xl glass card-tilt tilt fade-up">
+          <h3 class="font-semibold text-lg mb-3 flex items-center gap-2"><i class="bx bx-star text-cyan-300"></i> Key Strengths</h3>
+          <div class="flex flex-wrap gap-2 text-sm">
+            <span class="bg-white/6 px-3 py-1 rounded">System Design</span>
+            <span class="bg-white/6 px-3 py-1 rounded">Project Leadership</span>
+            <span class="bg-white/6 px-3 py-1 rounded">Team Mentorship</span>
+            <span class="bg-white/6 px-3 py-1 rounded">Product Roadmap</span>
+            <span class="bg-white/6 px-3 py-1 rounded">Freelancing</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="max-w-6xl mx-auto px-6 py-10">
+      <div class="bg-[#071026] rounded-2xl p-6 border border-white/6 grid grid-cols-1 md:grid-cols-3 gap-6 items-start glass">
+        <div class="md:col-span-2">
+          <h2 class="text-xl font-bold">About & Experience</h2>
+          <p class="text-slate-300 mt-3">Senior Software Developer and SaaS specialist with 5+ years building secure, scalable web apps and AI-driven platforms. I lead teams, design backend architecture, and deliver measurable business outcomes.</p>
+          <div class="mt-4 space-y-3">
+            <div class="flex items-start gap-4">
+              <div class="w-2.5 h-2.5 mt-2 rounded-full bg-purple-400"></div>
+              <div>
+                <div class="font-semibold">Elevate — Founder & Lead Developer</div>
+                <div class="text-xs text-slate-400">June 2025 – Present</div>
+                <div class="text-sm text-slate-300 mt-1">Built a SaaS platform leveraging AI for website optimization, scalable backend, A/B testing tools, and monitoring.</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-2.5 h-2.5 mt-2 rounded-full bg-indigo-400"></div>
+              <div>
+                <div class="font-semibold">Fiverr — Freelance Full-Stack Developer</div>
+                <div class="text-xs text-slate-400">2019 – Present</div>
+                <div class="text-sm text-slate-300 mt-1">Delivered 30+ full-stack projects, optimized performance, and developed WordPress & SaaS solutions.</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-2.5 h-2.5 mt-2 rounded-full bg-teal-400"></div>
+              <div>
+                <div class="font-semibold">Karrota Agency — Team Lead & Full-Stack Developer</div>
+                <div class="text-xs text-slate-400">Oct 2022 – Nov 2023</div>
+                <div class="text-sm text-slate-300 mt-1">Led a team to deliver backend systems, CI/CD, and secure deployments.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <aside class="rounded-xl p-4 bg-gradient-to-b from-white/3 to-white/2 text-slate-900">
+          <div class="text-sm font-semibold">Quick CV</div>
+          <div class="mt-2 text-xs">ARDIAN KRASNIQI</div>
+          <div class="mt-2 text-sm">Software Developer | AI & SaaS Specialist</div>
+          <div class="mt-3 text-xs text-slate-800">Email: ardiankrasqini171@gmail.com</div>
+          <div class="mt-2 text-xs text-slate-800">Phone: +383 45 959 131</div>
+          <a id="cv" href="ArdianKrasniqi-fullstack.pdf" class="mt-4 block text-center px-3 py-2 rounded-md bg-[#0b1220] text-white">Full CV (copy/paste available)</a>
+        </aside>
+      </div>
+    </section>
+
+    <section id="contact" class="max-w-6xl mx-auto px-6 py-12">
+      <div class="bg-[#071026] rounded-2xl p-6 border border-white/6 grid grid-cols-1 md:grid-cols-2 gap-6 items-start glass">
+        <div>
+          <h3 class="text-lg font-bold">Let's build something</h3>
+          <p class="text-slate-400 mt-2">Available for freelance, contract or remote roles. I enjoy turning complex backend problems into reliable products.</p>
+          <div class="mt-4 space-y-2 text-sm text-slate-400">
+            <div><strong>Email:</strong> ardiankrasqini171@gmail.com</div>
+            <div><strong>Phone:</strong> +383 45 959 131</div>
+            <div><strong>Location:</strong> Kosova</div>
+          </div>
+          <div class="mt-6 flex gap-3">
+            <a href="https://github.com/ardianiii" target="_blank" class="px-4 py-2 rounded-md glass border border-white/6">GitHub</a>
+            <a href="https://linkedin.com/in/ardiankrasniqii/" target="_blank" class="px-4 py-2 rounded-md glass border border-white/6">LinkedIn</a>
+          </div>
+        </div>
+        <form class="space-y-4" onsubmit="event.preventDefault(); alert('Thanks! I\\'ll get back to you.');">
+          <label class="block text-xs">Your name</label>
+          <input required class="w-full rounded-md p-3 bg-transparent border border-white/6 focus-ring" placeholder="Name">
+          <label class="block text-xs">Email</label>
+          <input required class="w-full rounded-md p-3 bg-transparent border border-white/6 focus-ring" placeholder="Email">
+          <label class="block text-xs">Message</label>
+          <textarea required class="w-full rounded-md p-3 bg-transparent border border-white/6 focus-ring" rows="4" placeholder="Short message"></textarea>
+          <button class="px-4 py-3 rounded-md bg-gradient-to-r from-purple-600 to-indigo-500 text-white">Send</button>
+        </form>
+      </div>
+      <footer class="mt-6 text-center text-xs text-slate-500">
+        © <span id="year"></span> Ardian Krasniqi — Built with ❤️ · Smooth interactions
+      </footer>
+    </section>
+  </main>
+
+  <!-- Project modal -->
+  <div id="projectModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50" aria-hidden="true">
+    <div class="modal-panel bg-[#081226] rounded-2xl p-6 w-full max-w-3xl border border-white/6">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h3 id="modalTitle" class="text-lg font-bold"></h3>
+          <p id="modalDesc" class="text-slate-400 mt-2"></p>
+        </div>
+        <div><button id="closeModal" class="p-2 rounded-md glass">Close</button></div>
+      </div>
+      <div class="mt-4 text-xs text-slate-400" id="modalTech">Tech stack: —</div>
+      <div class="mt-4 text-right">
+        <a id="modalVisit" href="#" target="_blank" class="px-4 py-2 rounded-md bg-white/5">Visit Site</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // set year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // mobile menu toggle
+    const navBtn = document.getElementById('navBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    let menuOpen = false;
+    navBtn.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      if (menuOpen) {
+        mobileMenu.classList.remove('-translate-y-2', 'opacity-0', 'pointer-events-none');
+        mobileMenu.classList.add('translate-y-0', 'opacity-100');
+      } else {
+        mobileMenu.classList.add('-translate-y-2', 'opacity-0', 'pointer-events-none');
+        mobileMenu.classList.remove('translate-y-0', 'opacity-100');
+      }
+    });
+
+    // fade-up on scroll
+    const faders = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2, rootMargin: "0px 0px -50px 0px" });
+    faders.forEach(el => observer.observe(el));
+
+    // project modal logic
+    const projectBtns = document.querySelectorAll('.openProject');
+    const projectModal = document.getElementById('projectModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalTech = document.getElementById('modalTech');
+    const modalVisit = document.getElementById('modalVisit');
+    const closeModal = document.getElementById('closeModal');
+
+    projectBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const article = e.target.closest('article');
+        if (!article) return;
+        const title = article.getAttribute('data-title') || "";
+        const desc = article.getAttribute('data-desc') || "";
+        const tech = article.getAttribute('data-tech') || "";
+        const url = article.getAttribute('data-url') || "#";
+
+        modalTitle.textContent = title;
+        modalDesc.textContent = desc;
+        modalTech.textContent = "Tech stack: " + tech;
+        modalVisit.href = url;
+
+        projectModal.classList.remove('hidden');
+        projectModal.classList.add('flex');
+      });
+    });
+    closeModal.addEventListener('click', () => {
+      projectModal.classList.remove('flex');
+      projectModal.classList.add('hidden');
+    });
+
+    // tilt effect
+    if (window.VanillaTilt) {
+      const tiltEls = document.querySelectorAll('.tilt');
+      VanillaTilt.init(tiltEls, {
+        max: 15,
+        speed: 400,
+        scale: 1.02,
+        glare: true,
+        "max-glare": 0.3
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+</body>
+</html>
